@@ -246,7 +246,7 @@ header > button:hover {
 .mf-flag::before {
     content: "";
     z-index: 300;
-    background-image: url("img/icons8-headstone-96.png");
+    background-image: url("img/icons8-explosive-materials-96.png");
     background-size: contain;
     width: 60px;
     height: 60px;

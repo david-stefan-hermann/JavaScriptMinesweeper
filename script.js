@@ -161,6 +161,11 @@ function uncoverTile(y, x) {
 
     let elem = document.getElementById("mf-field-" + y + "-" + x);
 
+    // skip if flag
+    if (elem.classList.contains("mf-flag")) {
+        return;
+    }
+
     // uncover this tile
     if(value != 0 && value != -1) {
         elem.innerHTML = value;
@@ -374,6 +379,10 @@ function toggleMenu() {
     if (preventMenuToggle == true) {
         return;
     }
+
+    // reset click counter to enable closing on screed
+    clickCounter = 0;
+
     playSound(sounds.pause);
     console.log(showMenu);
     showMenu = !showMenu;
@@ -451,6 +460,34 @@ document.getElementById("interaction-overlay").addEventListener("click", (e) => 
 document.getElementById("menu-name").addEventListener("click", () => {
     toggleMenu();
 });
+
+// close menu on screen click
+let clickCounter = 0;
+document.addEventListener("click", e => {
+    if(!showMenu) {
+        return;
+    }
+    clickCounter++;
+    
+    if(clickCounter > 1) {
+        console.log(e.target);
+        toggleMenu();
+        
+    }
+
+});
+
+document.getElementById("inner-menu").addEventListener("click", e => {
+    e.stopPropagation();
+    return;
+    console.log(e.target);
+    console.log(document.getElementById("inner-menu"));
+    if(e.target == document.getElementById("inner-menu")) {
+        return;
+    };
+    toggleMenu();
+});
+
 
 let lastMouseButton = 0;
 document.addEventListener("mouseup", (e) => {
