@@ -1,0 +1,274 @@
+/* -------------------------------------------------------- general */
+
+html, body {
+    overflow: hidden;
+    font-family: 'VT323', monospace;
+    font-size: 1.2em;
+    margin: 0px;
+    padding: 0px;
+    user-select: none;
+}
+
+.hide-elem {
+    display: none !important;
+}
+
+.hide-pseudo::before {
+    display: none !important;
+}
+
+/* -------------------------------------------------------- interaction overlay */
+
+#interaction-overlay {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    left: 0px;
+    top: 0px;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#interaction-overlay {
+    color: white;
+    cursor: pointer;
+    user-select: none;
+}
+
+#interaction-overlay:active {
+    color: white;
+    cursor: default;
+}
+/* -------------------------------------------------------- header */
+
+header {
+    width: 100%;
+    height: 80px;
+    background-color: orange;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+header > h2 {
+    text-align: center;
+}
+
+header > button {
+    height: 50px;
+    width: 50px;
+    margin: 0px;
+    padding: 0px;
+
+    background-color: transparent;
+    border: none;
+    color: black;
+
+    background-image: url("img/icons8-gear-96.png");
+    background-size: contain;
+
+    transition: all 0.6s;
+}
+
+header > button:hover {
+    cursor: pointer;
+    transform: rotate(90deg);
+    transition: all 0.6s;
+}
+
+/* -------------------------------------------------------- menu */
+
+#menu {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    z-index: 100;
+
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+#menu h3, h2 {
+    margin: 0px;
+}
+
+#inner-menu {
+    background-color: greenyellow;
+    outline: 10px solid green;
+    border-radius: 30px;
+}
+
+#menu-name {
+    width: 100%;
+    background-color: #57c018;
+    border-radius: 10px 10px 0px 0px;
+    margin-bottom: 10px;
+
+    pointer-events: none;
+}
+
+#menu-name > h2 {
+    padding: 20px 80px;
+}
+
+#menu-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    padding: 10px 0px 20px 0px;
+}
+
+.menu-item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.menu-item > button {
+    margin-left: 15px;
+
+    width: 2em;
+    height: 2em;
+    border: 2px solid green;
+    border-radius: 3px;
+    
+    color: black;
+    font-weight: 600;
+    background-color: #57c018;
+    cursor: pointer;
+}
+
+#button {
+    cursor: pointer;
+    animation-name: grow;
+    animation-duration: 0.5s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+}
+
+#button:hover {
+    color: darkorchid;
+}
+
+#menu-name::before {
+    content: "";
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    z-index: 200;
+    margin-left: -15;
+    margin-top: -15;
+    
+    outline: 7px solid green;
+    border-radius: 100px;
+    
+    background-color: greenyellow;
+    background-image: url("img/icons8-multiply-52.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+
+    cursor: pointer;
+    animation-name: turn-short;
+    animation-duration: 3s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+
+    pointer-events: all;
+}
+
+/* -------------------------------------------------------- mine field */
+
+#mine-field {
+    position: fixed;
+    top: 80px;
+    left: 0px;
+    width: 100%;
+    height: calc(100% - 80px);
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background-color: olive;
+}
+
+#inner-mine-field {
+    height: 100%;
+    width: 100%;
+    border: 2px solid darkolivegreen;
+}
+
+.mf-row {
+    display: flex;
+    flex-direction: row;
+}
+
+.mf-field {
+    box-sizing: border-box;
+    border: 2px solid darkolivegreen;
+    background-color: olive;
+    height: 60px;
+    width: 60px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2em;
+
+    background-size: contain;
+}
+
+.mf-field::before {
+    content: "";
+    height: 60px;
+    width: 60px;
+    background-color: olivedrab;
+    position: absolute;
+    box-sizing: border-box;
+    border: 2px solid darkolivegreen;
+}
+
+.mf--1 {
+    background-color: red !important;
+}
+
+.mf-flag::before {
+    content: "";
+    z-index: 300;
+    background-image: url("img/icons8-headstone-96.png");
+    background-size: contain;
+    width: 60px;
+    height: 60px;
+}
+
+/* -------------------------------------------------------- animation */
+
+@keyframes grow {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+}
+
+@keyframes turn {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(90deg); }
+}
+
+@keyframes turn-short {
+    0% { transform: rotate(0deg); }
+    70% { transform: rotate(0deg); }
+    85% { transform: rotate(45deg); }
+    100% { transform: rotate(0deg); }
+    
+}
