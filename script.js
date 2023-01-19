@@ -202,6 +202,14 @@ function uncoverTile(y, x) {
 }
 
 function setFlag(elem) {
+    // no flag if menu active
+    if(showMenu || showNgMenu) {
+        return;
+    }
+    // no flag if not playing
+    if(currentState != "playing") {
+        return;
+    }
     // flag    
     console.log("setting flag");
     if(elem.classList.contains("mf-flag")) {
@@ -260,6 +268,13 @@ async function uncoverMines(y = -1, x = -1) {
             await sleep(sleepTime);
         }
         sleepTime--;
+        
+    }
+    
+    // show menu if not open already
+    console.log("M");
+    if(!showNgMenu) {
+        chooseDifficulty();
     }
 }
 
