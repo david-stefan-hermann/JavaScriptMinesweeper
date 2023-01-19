@@ -17,27 +17,52 @@
 <body>
     <header>
         <h2>Minesweeper by David Hermann</h2>
-        <button id="controls" onclick="toggleMenu()"></button>
+        <button class="header-button" id="controls" onclick="toggleMenu()"></button>
+        <button class="header-button" id="new-game" onclick="chooseDifficulty()"></button>
     </header>
-    <div id="menu" class="hide-elem">
-        <div id="inner-menu">
-            <div id="menu-name">
+    <div id="menu" class="menu hide-elem" onclick="hideMenu('mn')">
+        <div id="inner-menu" class="inner-menu">
+            <div id="menu-name" class="menu-name">
                 <h2>Menu</h2>
             </div>
-            <div id="menu-content">
-
-                <h3 id="state-message">still playing..</h3>
+            <div id="menu-content" class="menu-content">
                 
                 <div class="menu-item">
                     <h3>play sounds</h3>
-                    <button type="button" id="mute-sounds">✔</button>
+                    <button type="button" id="mute-sounds" class="button-active">✔</button>
                 </div>
                 <div class="menu-item">
                     <h3>play music</h3>
-                    <button type="button" id="mute-music">✔</button>
+                    <button type="button" id="mute-music" class="button-active">✔</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="ng-menu" class="menu hide-elem" onclick="hideMenu('ng')">
+        <div id="ng-inner-menu" class="inner-menu">
+            <div id="ng-menu-name" class="menu-name">
+                <h2 id="state-message"></h2>
+            </div>
+            <div id="ng-menu-content" class="menu-content">
+                
+                <div class="menu-item">
+                    <h3>difficulty</h3>
+                </div>
+                <div class="menu-item">
+                    <h3>pyjama</h3>
+                    <button type="button" class="difficulty-button" id="difficulty-1" value="10">✔</button>
+                </div>
+                <div class="menu-item">
+                    <h3>normal</h3>
+                    <button type="button" class="difficulty-button" id="difficulty-2" value="5">✔</button>
+                </div>
+                <div class="menu-item">
+                    <h3>madness</h3>
+                    <button type="button" class="difficulty-button" id="difficulty-3" value="2">✔</button>
                 </div>
                 
-                <h2 id="button" onclick="newGame()">Try Again</h2>
+                <h2 class="ng-button" onclick="newGame()">Try Again</h2>
             </div>
         </div>
     </div>

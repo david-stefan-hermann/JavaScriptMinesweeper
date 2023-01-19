@@ -20,7 +20,7 @@ function getDimensions() {
     document.getElementById("inner-mine-field").style.height = tilesY * tileSize;
     document.getElementById("inner-mine-field").style.width = tilesX * tileSize;
 
-    numberOfMines = Math.floor((tilesX * tilesY) / 5);
+    numberOfMines = Math.floor((tilesX * tilesY) / difficulty);
 }
 
 function initializeList() {
@@ -61,6 +61,7 @@ function calculateMinePositions(i, j) {
     console.log(">>>>>" + numberOfMines);
     minesInitialized = true;
 }
+
 function getActualMineNumber() {
     numberOfMines = 0;
     for (let i = 0; i < tilesY; i++) {
@@ -214,10 +215,6 @@ function setFlag(elem) {
 }
 
 async function uncoverMines(y = -1, x = -1) {
-    showMenu = true;
-    toggleMenu();
-    preventMenuToggle = true;
-
     if(y != -1 && x != -1) {
         let elem = document.getElementById("mf-field-" + y + "-" + x);
         elem.classList.add("hide-pseudo");
@@ -239,9 +236,14 @@ async function uncoverMines(y = -1, x = -1) {
     let shuffledMinePositions = minePositions.sort((a, b) => 0.5 - Math.random());
 
     let texture = 0;
+    let sleepTime = 100;
 
     for (let i = 0; i < shuffledMinePositions.length; i++) {
-        
+        if (currentState == "playing") {
+            // abort uncovering
+            return;
+        }
+
         let elem = document.getElementById("mf-field-" + shuffledMinePositions[i][0] + "-" + shuffledMinePositions[i][1]);
         elem.classList.add("hide-pseudo");
         
@@ -252,13 +254,14 @@ async function uncoverMines(y = -1, x = -1) {
             texture = 0;
         }
 
-        playSound(sounds.food);
-        await sleep(100);
+        
+        if(sleepTime <= 30) { sleepTime == 30; }
+        if(i % 3 == 0) {
+            playSound(sounds.food);
+            await sleep(sleepTime);
+        }
+        sleepTime--;
     }
-
-    preventMenuToggle = false;
-    showMenu = false;
-    toggleMenu();
 }
 
 let uncoveredTiles = new Set();
@@ -300,10 +303,64 @@ function gameOver(y, x) {
     uncoverMines(y, x);
 }
 
+let showNgMenu = false;
+function chooseDifficulty() {
 
+    let ngMenu = document.getElementById("ng-menu");
+
+    playSound(sounds.pause);
+
+    showNgMenu = !showNgMenu;
+
+    if(showNgMenu) {
+        document.getElementById("state-message").innerHTML = gameStateMessage[currentState];
+        ngMenu.classList.remove("hide-elem");
+        
+        return;
+    }
+
+    ngMenu.classList.add("hide-elem");
+}
+
+
+
+
+
+
+//#region New Game Menu
+
+
+let difficultyButtons = document.getElementsByClassName("difficulty-button");
+
+function disableButtons () {
+    Array.prototype.forEach.call(difficultyButtons, e => {
+        e.classList.remove("button-active");
+    });
+}
+
+Array.prototype.forEach.call(difficultyButtons, e => {
+    e.addEventListener("click", e => {
+        difficulty = e.target.value;
+        if(e.target.classList.contains("button-active")) {
+            // do something
+            return;
+        } else {
+            disableButtons();
+            e.target.classList.add("button-active");
+        }
+        console.log("difficulty: " + difficulty);
+    });
+});
+
+// set normal difficulty as default
+let difficulty = 5;
+document.getElementById("difficulty-2").classList.add("button-active");
+
+//#endregion
 
 //#region UI and other
- 
+
+
 // "mines"
 const mineTextures = [
     "img/icons8-atomic-bomb-96.png",
@@ -373,15 +430,8 @@ function playSound(sound, loop=false, mult=1) {
     s.play();
 }
 
-let preventMenuToggle = false;
 let showMenu = false;
 function toggleMenu() {
-    if (preventMenuToggle == true) {
-        return;
-    }
-
-    // reset click counter to enable closing on screed
-    clickCounter = 0;
 
     playSound(sounds.pause);
     console.log(showMenu);
@@ -407,10 +457,10 @@ document.getElementById("mute-sounds").addEventListener("click", (e) => {
     playSound(sounds.tap);
 
     if(soundsMuted) {
-        e.target.style.color = "#57c018";
+        e.target.classList.remove("button-active");
         return;
     }
-    e.target.style.color = "#000";
+    e.target.classList.add("button-active");
 });
 
 // add event listener to music muting
@@ -422,10 +472,10 @@ document.getElementById("mute-music").addEventListener("click", (e) => {
     updateMusicVolume();
 
     if(musicMuted) {
-        e.target.style.color = "#57c018";
+        e.target.classList.remove("button-active");
         return;
     }
-    e.target.style.color = "#000";
+    e.target.classList.add("button-active");
 });
 
 function updateMusicVolume() {
@@ -461,7 +511,29 @@ document.getElementById("menu-name").addEventListener("click", () => {
     toggleMenu();
 });
 
-// close menu on screen click
+// close button of new game menu
+document.getElementById("ng-menu-name").addEventListener("click", () => {
+    chooseDifficulty();
+});
+
+Array.prototype.forEach.call(document.getElementsByClassName("inner-menu"), e => {
+    e.addEventListener("click", e => {
+        e.stopPropagation();
+    });
+});
+
+// close menus on screen click
+function hideMenu(m) {
+    if(m == "mn") {
+        // hide menu
+        toggleMenu();
+        return;
+    }
+    // hide ng menu
+    chooseDifficulty();
+}
+
+/*
 let clickCounter = 0;
 document.addEventListener("click", e => {
     if(!showMenu) {
@@ -470,24 +542,18 @@ document.addEventListener("click", e => {
     clickCounter++;
     
     if(clickCounter > 1) {
-        console.log(e.target);
+        showNgMenu = false;
+        chooseDifficulty();
         toggleMenu();
         
     }
 
 });
-
 document.getElementById("inner-menu").addEventListener("click", e => {
     e.stopPropagation();
     return;
-    console.log(e.target);
-    console.log(document.getElementById("inner-menu"));
-    if(e.target == document.getElementById("inner-menu")) {
-        return;
-    };
-    toggleMenu();
 });
-
+*/
 
 let lastMouseButton = 0;
 document.addEventListener("mouseup", (e) => {

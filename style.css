@@ -50,14 +50,14 @@ header {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 20px;
+    gap: 10px;
 }
 
 header > h2 {
     text-align: center;
 }
 
-header > button {
+.header-button {
     height: 50px;
     width: 50px;
     margin: 0px;
@@ -67,21 +67,35 @@ header > button {
     border: none;
     color: black;
 
-    background-image: url("img/icons8-gear-96.png");
     background-size: contain;
 
     transition: all 0.6s;
 }
 
-header > button:hover {
+.header-button:hover {
     cursor: pointer;
-    transform: rotate(90deg);
+    transform: rotate(45deg);
     transition: all 0.6s;
 }
 
-/* -------------------------------------------------------- menu */
+#controls {
+    background-image: url("img/icons8-gear-96.png");
+}
 
-#menu {
+#new-game {
+    background-image: url("img/icons8-new-96.png");
+}
+
+/* -------------------------------------------------------- menu */
+#ng-menu {
+    z-index: 50;
+}
+
+#ng-inner-menu {
+
+}
+
+.menu {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -96,17 +110,17 @@ header > button:hover {
     background-color: rgba(0, 0, 0, 0.5);
 }
 
-#menu h3, h2 {
+.menu h3, h2 {
     margin: 0px;
 }
 
-#inner-menu {
+.inner-menu {
     background-color: greenyellow;
     outline: 10px solid green;
     border-radius: 30px;
 }
 
-#menu-name {
+.menu-name {
     width: 100%;
     background-color: #57c018;
     border-radius: 10px 10px 0px 0px;
@@ -115,11 +129,11 @@ header > button:hover {
     pointer-events: none;
 }
 
-#menu-name > h2 {
+.menu-name > h2 {
     padding: 20px 80px;
 }
 
-#menu-content {
+.menu-content {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -142,13 +156,13 @@ header > button:hover {
     border: 2px solid green;
     border-radius: 3px;
     
-    color: black;
+    color: #57c018;
     font-weight: 600;
     background-color: #57c018;
     cursor: pointer;
 }
 
-#button {
+.ng-button {
     cursor: pointer;
     animation-name: grow;
     animation-duration: 0.5s;
@@ -156,11 +170,11 @@ header > button:hover {
     animation-timing-function: linear;
 }
 
-#button:hover {
+.ng-button:hover {
     color: darkorchid;
 }
 
-#menu-name::before {
+.menu-name::before {
     content: "";
     position: absolute;
     width: 40px;
@@ -185,6 +199,10 @@ header > button:hover {
     animation-timing-function: linear;
 
     pointer-events: all;
+}
+
+.button-active {
+    color: black !important;
 }
 
 /* -------------------------------------------------------- mine field */
@@ -262,7 +280,7 @@ header > button:hover {
 
 @keyframes turn {
     0% { transform: rotate(0deg); }
-    100% { transform: rotate(90deg); }
+    100% { transform: rotate(45deg); }
 }
 
 @keyframes turn-short {
