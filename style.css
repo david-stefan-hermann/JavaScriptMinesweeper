@@ -110,7 +110,7 @@ header > h2 {
     background-color: rgba(0, 0, 0, 0.5);
 }
 
-.menu h3, h2 {
+.menu h3, h2, h4 {
     margin: 0px;
 }
 
@@ -146,6 +146,15 @@ header > h2 {
     display: flex;
     justify-content: center;
     align-items: center;
+    padding: 0px 20px;
+}
+
+.menu-item > h4 > a {
+    color: orange;
+}
+
+.menu-item > h4 > a:hover {
+    color: darkgoldenrod;
 }
 
 .menu-item > button {
@@ -203,6 +212,15 @@ header > h2 {
 
 .button-active {
     color: black !important;
+}
+
+.full-text {
+    max-width: 200px;
+    text-align: justify;
+}
+
+.volume-slider {
+
 }
 
 /* -------------------------------------------------------- mine field */

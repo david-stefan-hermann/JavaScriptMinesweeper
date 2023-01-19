@@ -1,4 +1,3 @@
-
 // game logic
 let fieldHeight;
 let fieldWidth;
@@ -278,6 +277,8 @@ function checkWin() {
 // Starting game
 let minesInitialized = false;
 function newGame() {
+    setVolume();
+    chooseDifficulty();
     currentState = "gameover";
     uncoveredTiles = new Set();
     // hide menu
@@ -400,24 +401,35 @@ const gameStateMessage = {
     justloaded: "Start a game!"
 }
 
-let volume = 0.5;
-let musicVolume = volume * 0.5;
-let currentMusicVolume = musicVolume;
+const soundSlider = document.getElementById("sounds-slider");
+const musicSlider = document.getElementById("music-slider");
+
+soundSlider.oninput = e => { setVolume(); };
+musicSlider.oninput = e => { setVolume(); };
+
+function setVolume() {
+    volume = soundSlider.value / 100;
+    musicVolume = musicSlider.value / 100;
+    if(currentMusic)
+        currentMusic.volume = musicVolume;
+}
+
+let volume = 0;
+let musicVolume = 0;
+// let currentMusicVolume = musicVolume;
 
 let currentMusic;
 
-function playSound(sound, loop=false, mult=1) {
-    let thisVolume = currentMusicVolume;
-    if(!loop) {
-        // not playing music
-        if(soundsMuted) {
-            return;
-        }
-        thisVolume = volume;
-    }
+function playSound(sound, loop=false) {
     const s = sound.cloneNode(true);
-    s.volume = thisVolume * mult;
-    if (thisVolume >= 1.5) { thisVolume = 1; }
+
+    let thisVolume = volume;
+    if (loop) {thisVolume = musicVolume;}
+
+    if (thisVolume >= 1) { thisVolume = 1; }
+    
+    s.volume = thisVolume;
+    
     if (loop) { 
         // playing music
         s.loop = true;
@@ -449,7 +461,7 @@ function toggleMenu() {
 
     document.getElementById("menu").classList.add("hide-elem");
 }
-
+/*
 // add event listener to sound muting
 let soundsMuted = false;
 document.getElementById("mute-sounds").addEventListener("click", (e) => {
@@ -476,18 +488,18 @@ document.getElementById("mute-music").addEventListener("click", (e) => {
         return;
     }
     e.target.classList.add("button-active");
-});
-
+});*/
+/*
 function updateMusicVolume() {
     if(musicMuted) {
         currentMusicVolume = 0;
-        currentMusic.volume = 0;
+        currentMusic.pause();
         return;
     }
     currentMusicVolume = musicVolume;
-    currentMusic.volume = currentMusicVolume;
+    currentMusic.play();
 }
-
+*/
 // add event listener to control menu by keys
 document.addEventListener("keyup", (e) => {
     console.log(e.code);
