@@ -595,6 +595,7 @@ const mineTextures = [
     "img/icons8-naval-mine-96.png",
     "img/icons8-radioactive-96.png",
     "img/icons8-power-plant-96.png",
+    "img/icons8-volcano-96.png",
 ]
 
 const uncoveredMineTexture = "img/icons8-mushroom-cloud-96.png";
