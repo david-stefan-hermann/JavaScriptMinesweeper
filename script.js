@@ -322,7 +322,7 @@ async function uncoverMines(y = -1, x = -1) {
         }
 
         
-        if(sleepTime <= 30) { sleepTime == 30; }
+        if(sleepTime <= 30) { sleepTime = 30; }
         if(i % 3 == 0) {
             playSound(sounds.food);
             await sleep(sleepTime);
@@ -338,6 +338,7 @@ async function uncoverMines(y = -1, x = -1) {
 
 // Starting game
 let minesInitialized = false;
+
 function newGame() {
     if(!hasJustBeenLoaded) {
         playSound(sounds.new_game);
@@ -353,6 +354,11 @@ function newGame() {
     
     playSound(sounds.music, true);
 
+    if (difficultyButtons[difficultyButtons.length - 1].value == difficulty) {
+        resetTimer(true);
+    } else {
+        resetTimer(false);
+    }
     
     getDimensions();
     initializeList();
@@ -363,6 +369,7 @@ function newGame() {
 
 function gameOver(y, x) {
     currentState = gameStates.gameover;
+    stopTimer();
     playSound(sounds.go_music, true);
     uncoverMines(y, x);
 }
@@ -403,7 +410,6 @@ Array.prototype.forEach.call(difficultyButtons, e => {
             disableButtons();
             e.target.classList.add("button-active");
         }
-        console.log("difficulty: " + difficulty);
     });
 });
 
@@ -550,7 +556,69 @@ document.getElementById("interaction-overlay").addEventListener("click", async (
 
 //#endregion
 
-// -------------------------------------------------
+//#region timer for madness
+
+// from: https://css-tricks.com/how-to-create-an-animated-countdown-timer-with-html-css-and-javascript/
+
+const TIME_LIMIT = 600;
+
+let timePassed;
+let timeLeft; 
+let set_interval;
+
+function stopTimer() {
+    clearInterval(set_interval);
+}
+
+function resetTimer(boo) {
+    // no timer
+    stopTimer();
+    document.getElementById("madness-countdown").innerHTML = "";
+    timePassed = 0;
+    timeLeft = TIME_LIMIT;
+    if(!boo) { 
+        return; 
+    }
+    startTimer();
+}
+
+function formatTimeLeft(time) {
+    // The largest round integer less than or equal to the result of time divided being by 60.
+    const minutes = Math.floor(time / 60);
+    
+    // Seconds are the remainder of the time divided by 60 (modulus operator)
+    let seconds = time % 60;
+    
+    // If the value of seconds is less than 10, then display seconds with a leading zero
+    if (seconds < 10) {
+      seconds = `0${seconds}`;
+    }
+  
+    // The output in MM:SS format
+    return `${minutes}:${seconds}`;
+}
+
+function startTimer() {
+    document.getElementById("madness-countdown").innerHTML = formatTimeLeft(timeLeft);
+    set_interval = setInterval(() => {
+        if(timeLeft <= 0) {
+            gameOver();
+            return;
+        }
+        // The amount of time passed increments by one
+        timePassed = timePassed += 1;
+        timeLeft = TIME_LIMIT - timePassed;
+
+        // The time left label is updated
+        document.getElementById("madness-countdown").innerHTML = formatTimeLeft(timeLeft);
+    }, 1000);
+}
+
+
+
+//#endregion
+
+// ------------------------------------------------- 
 
 
 //#region sound
