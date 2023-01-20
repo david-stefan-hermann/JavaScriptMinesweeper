@@ -17,15 +17,16 @@
 <body>
     <header>
         <h2>Minesweeper by David Hermann</h2>
-        <button class="header-button" id="controls" onclick="toggleMenu()"></button>
-        <button class="header-button" id="new-game" onclick="chooseDifficulty()"></button>
+        <button class="header-button"><div></div></button>
+        <button class="header-button"><div></div></button>
+        <button class="header-button"><div></div></button>
     </header>
-    <div id="menu" class="menu hide-elem" onclick="hideMenu('mn')">
-        <div id="inner-menu" class="inner-menu">
-            <div id="menu-name" class="menu-name">
-                <h2>Menu</h2>
+    <div class="menu hide-elem">
+        <div class="inner-menu">
+            <div class="menu-name">
+                <h2>Settings</h2>
             </div>
-            <div id="menu-content" class="menu-content">
+            <div class="menu-content">
                 
                 <div class="menu-item">
                     <h3>play sounds</h3>
@@ -37,37 +38,22 @@
                     <h3>play music</h3>
                 </div>
                 <div class="menu-item">
-                    <input id="music-slider" class="volume-slider" type="range" min="0" max="100" value="40">
+                    <input id="music-slider" class="volume-slider" type="range" min="0" max="100" value="20">
                 </div>
-                <div class="menu-item">
-                    <h4>info</h4>
-                </div>
-                <div class="menu-item full-text">
-                    <h4>press left mouse button to uncover a tile</h4>
-                </div>
-                <div class="menu-item">
-                    <h4>resources</h4>
-                </div>
-                <div class="menu-item">
-                    <h4>music from: <a href="https://www.fesliyanstudios.com">fesliyanstudios</a></h4>
-                </div>
-                <div class="menu-item">
-                    <h4>icons from: <a href="https://www.icons8.com">icons8</a></h4>
-                </div>
-                
+
             </div>
         </div>
     </div>
 
-    <div id="ng-menu" class="menu hide-elem" onclick="hideMenu('ng')">
-        <div id="ng-inner-menu" class="inner-menu">
-            <div id="ng-menu-name" class="menu-name">
+    <div class="menu hide-elem">
+        <div class="inner-menu">
+            <div class="menu-name">
                 <h2 id="state-message"></h2>
             </div>
-            <div id="ng-menu-content" class="menu-content">
+            <div class="menu-content">
                 
                 <div class="menu-item">
-                    <h3>difficulty</h3>
+                    <h3>choose difficulty</h3>
                 </div>
                 <div class="menu-item">
                     <h3>pyjama</h3>
@@ -82,7 +68,32 @@
                     <button type="button" class="difficulty-button" id="difficulty-3" value="2">✔</button>
                 </div>
                 
-                <h2 class="ng-button" onclick="newGame()">Start New Game</h2>
+                <h2 id="ng-button" class="ng-button" onclick="newGame()">Start New Game</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="menu hide-elem">
+        <div class="inner-menu">
+            <div  class="menu-name">
+                <h2>About</h2>
+            </div>
+            <div class="menu-content">
+                <div class="menu-item full-text">
+                    <h3>press left mouse button to uncover a tile</h3>
+                </div>
+                <div class="menu-item">
+                    <h3>resources</h3>
+                </div>
+                <div class="menu-item">
+                    <h3>sounds from: <a href="https://mixkit.co">mixkit</a></h3>
+                </div>
+                <div class="menu-item">
+                    <h3>music from: <a href="https://www.fesliyanstudios.com">fesliyanstudios</a></h3>
+                </div>
+                <div class="menu-item">
+                    <h3>icons from: <a href="https://www.icons8.com">icons8</a></h3>
+                </div>
             </div>
         </div>
     </div>
