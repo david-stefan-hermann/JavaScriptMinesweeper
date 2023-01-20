@@ -1,5 +1,8 @@
 /* -------------------------------------------------------- general */
-
+@font-face {
+    font-family: "VT323";
+    src: url("font/VT323-Regular.ttf");
+}
 html, body {
     overflow: hidden;
     font-family: 'VT323', monospace;
