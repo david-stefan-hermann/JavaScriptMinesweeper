@@ -114,13 +114,6 @@ header > h2 {
 
 
 /* -------------------------------------------------------- menu */
-#ng-menu {
-    z-index: 50;
-}
-
-#ng-inner-menu {
-
-}
 
 .menu {
     display: flex;
@@ -315,11 +308,6 @@ header > h2 {
     0% { transform: scale(1); }
     50% { transform: scale(1.2); }
     100% { transform: scale(1); }
-}
-
-@keyframes turn {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(45deg); }
 }
 
 @keyframes turn-short {
