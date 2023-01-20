@@ -7,8 +7,17 @@ let tilesX;
 let numberOfMines;
 
 let mineArray;
+let editableMineArray;
 
 let tileSize = 60;
+
+function copyArray(oldarr) {
+    let newarr = [];
+    for (let i = 0; i < oldarr.length; i++) {
+        newarr.push([...oldarr[i]]);
+    }
+    return newarr;
+}
 
 function getDimensions() {
     // get size of mine field
@@ -118,11 +127,7 @@ function drawTiles() {
 
             let value = mineArray[i][j];
             
-            let extraClass = "";
-            if (value == -1)
-                extraClass = "mf--1";
-
-            tempMineField += "<div id='mf-field-" + i + "-" + j + "' class='mf-field " + extraClass + "' onclick='callUncoverTile(" + i + ", " + j + ")' oncontextmenu='event.preventDefault();'>" + " " + "</div>";
+            tempMineField += "<div id='mf-field-" + i + "-" + j + "' class='mf-field' onclick='callUncoverTile(" + i + ", " + j + ")' oncontextmenu='event.preventDefault();'>" + " " + "</div>";
         }
         tempMineField += "</div>";
     }
@@ -155,7 +160,7 @@ function uncoverTile(y, x) {
     let value = mineArray[y][x];
 
     // already checked
-    if(value == 9) {
+    if(editableMineArray[y][x] == 9) {
         return;
     }
 
@@ -185,7 +190,7 @@ function uncoverTile(y, x) {
     }
 
     if(value == 0) {
-        mineArray[y][x] = 9;
+        editableMineArray[y][x] = 9;
         // uncover adjacent fields
         uncoverTile(y - 1, x - 1);
         uncoverTile(y - 1, x);
@@ -198,9 +203,12 @@ function uncoverTile(y, x) {
         uncoverTile(y + 1, x);
         uncoverTile(y + 1, x + 1);
         return;
+    } else {
+        editableMineArray[y][x] = 9;
     }
 }
 
+let flagArray;
 function setFlag(elem) {
     // no flag if menu active
     if(isMenuActive()) { return; }
@@ -211,15 +219,60 @@ function setFlag(elem) {
     // no flag if element not a tile
     if(!elem.classList.contains("mf-field")) { return; }
 
+    // get position
+    let pos = [elem.id.split("-")[2], elem.id.split("-")[3]];
+
+    // no flag if tile has been uncovered
+    if(editableMineArray[pos[0]][pos[1]] > 0) { return; }
+    
+
     // set flag
-    console.log("setting flag");
-    if(elem.classList.contains("mf-flag")) {
-        // remove flag
-        elem.classList.remove("mf-flag");
+    let flag_value = flagArray[pos[0]][pos[1]]; 
+    
+    flagArray[pos[0]][pos[1]] = + !flag_value;
+    displayFlag(pos[0], pos[1], !flag_value);
+}
+
+function showTile(y, x) {
+    let mine_field = document.getElementById("mf-field-" + y + "-" + x);
+    mine_field.classList.add("hide-pseudo");
+}
+
+function displayFlag(y, x, boo) {
+    let mine_field = document.getElementById("mf-field-" + y + "-" + x);
+    if(boo) {
+        mine_field.classList.add("mf-flag");
     } else {
-        elem.classList.add("mf-flag");
+        mine_field.classList.remove("mf-flag");
     }
-    return;
+}
+
+async function evaluateFlags(pos = [], sleepTime = 100) {
+    if(pos.length > 1) {
+        // if params y and x are set
+        let flag = document.getElementById("mf-field-" + pos[0] + "-" + pos[1]);
+        flag.classList.add("mf-flag-correct");
+        return;
+    }
+    for (let i = tilesY - 1; i >= 0; i--) {
+        for (let j = tilesX - 1; j >= 0; j--) {
+            if (flagArray[i][j] > 0) {
+                // position is flag
+                let flag = document.getElementById("mf-field-" + i + "-" + j);
+                if (mineArray[i][j] != -1) {
+                    // aboard if starting new game
+                    if (currentState == gameStates.playing) { return; }
+
+                    // flag is not on mine
+                    flag.classList.add("mf-flag-wrong");
+                    await sleep(sleepTime);
+                }
+            }
+        }
+    }
+
+    // show game over / win screen
+    showMenu(1);
 }
 
 async function uncoverMines(y = -1, x = -1) {
@@ -247,13 +300,19 @@ async function uncoverMines(y = -1, x = -1) {
     let sleepTime = 100;
 
     for (let i = 0; i < shuffledMinePositions.length; i++) {
-        if (currentState == gameStates.playing) {
-            // abort uncovering
-            return;
-        }
+        // abort uncovering
+        if (currentState == gameStates.playing) { return; }
 
-        let elem = document.getElementById("mf-field-" + shuffledMinePositions[i][0] + "-" + shuffledMinePositions[i][1]);
-        elem.classList.add("hide-pseudo");
+        let currentMine = shuffledMinePositions[i]
+
+        let elem = document.getElementById("mf-field-" + currentMine[0] + "-" + currentMine[1]);
+
+        // if element is not flagged
+        if (flagArray[currentMine[0]][currentMine[1]] <= 0) {
+            showTile(currentMine[0], currentMine[1]);
+        } else {    // element is flagged
+            evaluateFlags([currentMine[0], currentMine[1]]);
+        }
         
         elem.style.backgroundImage = "url(" + mineTextures[texture] + ")";
         texture ++;
@@ -268,12 +327,10 @@ async function uncoverMines(y = -1, x = -1) {
             playSound(sounds.food);
             await sleep(sleepTime);
         }
-        sleepTime--;
-        
+        sleepTime--;   
     }
-    
-    // show game over / win screen
-    showMenu(1);
+    // mark wrong flags
+    evaluateFlags([], sleepTime);
 }
 
 
@@ -296,8 +353,11 @@ function newGame() {
     
     playSound(sounds.music, true);
 
+    
     getDimensions();
     initializeList();
+    editableMineArray = copyArray(mineArray);
+    flagArray = copyArray(mineArray);
     drawTiles();
 }
 

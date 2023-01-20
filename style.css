@@ -289,25 +289,41 @@ header > h2 {
     border: 2px solid darkolivegreen;
 }
 
-.mf--1 {
-    background-color: red !important;
-}
-
-.mf-flag::before {
+.mf-flag::after {
     content: "";
     z-index: 300;
     background-image: url("img/icons8-explosive-materials-96.png");
     background-size: contain;
     width: 60px;
     height: 60px;
+
+    transition: all 500ms;
+    
+    animation-name: ease-in;
+    animation-duration: 100ms;
+    animation-timing-function: linear;
 }
 
+.mf-flag-correct::before {
+    background-color: lime !important;
+    border: 2px solid limegreen !important;
+}
+
+.mf-flag-wrong::before {
+    background-color: firebrick;
+    border: 2px solid darkred;
+}
 /* -------------------------------------------------------- animation */
 
 @keyframes grow {
     0% { transform: scale(1); }
     50% { transform: scale(1.2); }
     100% { transform: scale(1); }
+}
+
+@keyframes turn {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(45deg); }
 }
 
 @keyframes turn-short {
@@ -325,4 +341,9 @@ header > h2 {
     3% { transform: rotate(-10deg); }
     4% { transform: rotate(0deg); }
     100% { transform: rotate(0deg); }
+}
+
+@keyframes ease-in {
+    0% { transform: scale(0); }
+    100% { transform: scale(1); }
 }
