@@ -1,0 +1,161 @@
+/* -------------------------------------------------------- general */
+@font-face {
+    font-family: "VT323";
+    src: url("font/VT323-Regular.ttf");
+}
+
+html, body {
+    overflow: hidden;
+    font-family: 'VT323', monospace;
+    font-size: 30px;
+    margin: 0px;
+    padding: 0px;
+    user-select: none;
+}
+
+.hide-elem {
+    display: none !important;
+}
+
+.hide-pseudo::before {
+    display: none !important;
+}
+
+.menu a {
+    color: orange;
+    text-decoration: underline;
+}
+
+.menu a:hover {
+    color: darkgoldenrod;
+}
+
+/* -------------------------------------------------------- interaction overlay */
+
+#interaction-overlay {
+    font-size: 30px !important;
+}
+
+/* -------------------------------------------------------- header */
+
+header {
+    width: 100%;
+    max-width: 100%;
+    height: 200px;
+
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-content: center;
+
+    gap: 0px;
+}
+
+.header-organizer {
+
+}
+
+
+.headline {
+    width: 100%;
+    font-size: 1.5em;
+}
+
+.headline:hover {
+    
+}
+
+.headline:active > img {
+    transform: rotateY(540deg);
+}
+
+
+.header-button {
+    width: 80px;
+    height: 80px;
+}
+
+.header-button:hover {
+    cursor: pointer;
+    transform: none;
+    transition: all 0.6s;
+}
+
+#madness-countdown {
+    order: 10;
+    margin-left: 15px;
+    font-size: 2em;
+}
+
+/* --------------------------------- */
+
+.inner-menu {
+    transform: scale(2);
+}
+
+.menu-item > button {
+    margin-left: 15px;
+
+    width: 2em;
+    height: 2em;
+    border: 2px solid green;
+    border-radius: 3px;
+    
+    color: #57c018;
+    font-weight: 600;
+    background-color: #57c018;
+    cursor: pointer;
+}
+
+.button-active {
+    color: black !important;
+}
+
+
+.volume-slider {
+
+}
+
+/* -------------------------------------------------------- mine field */
+
+#mine-field {
+    top: 200px;
+    transform: scale(2);
+    max-height: calc(100% - 200);
+    z-index: -10;
+}
+
+/* -------------------------------------------------------- animation */
+
+@keyframes grow {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+}
+
+@keyframes turn {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(45deg); }
+}
+
+@keyframes turn-short {
+    0% { transform: rotate(0deg); }
+    70% { transform: rotate(0deg); }
+    85% { transform: rotate(45deg); }
+    100% { transform: rotate(0deg); }
+    
+}
+
+@keyframes wiggle {
+    0% { transform: rotate(0deg); }
+    1% { transform: rotate(15deg); }
+    2%{ transform: rotate(0deg); }
+    3% { transform: rotate(-15deg); }
+    4% { transform: rotate(0deg); }
+    100% { transform: rotate(0deg); }
+}
+
+@keyframes ease-in {
+    0% { transform: scale(0); }
+    100% { transform: scale(1); }
+}

@@ -9,7 +9,12 @@ let numberOfMines;
 let mineArray;
 let editableMineArray;
 
-let tileSize = 60;
+const REGULAR_TILE_SIZE = 60;
+let tileSize;
+
+//#region setting stage
+
+//#region helper functions
 
 function copyArray(oldarr) {
     let newarr = [];
@@ -17,18 +22,6 @@ function copyArray(oldarr) {
         newarr.push([...oldarr[i]]);
     }
     return newarr;
-}
-
-function getDimensions() {
-    // get size of mine field
-    fieldHeight = document.getElementById("mine-field").clientHeight;
-    fieldWidth = document.getElementById("mine-field").clientWidth;
-    tilesY = Math.floor(fieldHeight / tileSize);
-    tilesX = Math.floor(fieldWidth / tileSize);
-    document.getElementById("inner-mine-field").style.height = tilesY * tileSize;
-    document.getElementById("inner-mine-field").style.width = tilesX * tileSize;
-
-    numberOfMines = Math.floor((tilesX * tilesY) / difficulty);
 }
 
 function initializeList() {
@@ -42,6 +35,31 @@ function initializeList() {
     }
     mineArray = returnArray;
 }
+
+function getTileSize() {
+    tileSize = REGULAR_TILE_SIZE;
+    if (document.body.clientWidth < 768) {
+        tileSize = REGULAR_TILE_SIZE * 2;
+    }
+}
+
+function getDimensions() {
+    // get size of mine field
+    fieldHeight = document.getElementById("mine-field").clientHeight;
+    fieldWidth = document.getElementById("mine-field").clientWidth;
+    // get tilesize ( is device mobile or not )
+    getTileSize();
+    tilesY = Math.floor(fieldHeight / tileSize);
+    tilesX = Math.floor(fieldWidth / tileSize);
+    document.getElementById("inner-mine-field").style.height = tilesY * tileSize;
+    document.getElementById("inner-mine-field").style.width = tilesX * tileSize;
+    
+    numberOfMines = Math.floor((tilesX * tilesY) / difficulty);
+}
+
+//#endregion
+
+//#region generate array w mines and distances
 
 function calculateMinePositions(i, j) {
     console.log(">>>>>" + numberOfMines);
@@ -116,7 +134,12 @@ function calculateDistances() {
     }
 }
 
-// Drawing
+//#endregion
+
+//#endregion
+
+//#region rendering
+
 function drawTiles() {
     let tempMineField = "";
     for (let i = 0; i < tilesY; i++) {
@@ -135,6 +158,8 @@ function drawTiles() {
     // append fields
     document.getElementById("inner-mine-field").innerHTML = tempMineField;
 }
+
+//#endregion
 
 function callUncoverTile(y, x) {
     if(currentState == gameStates.gameover) {

@@ -10,6 +10,11 @@ html, body {
     margin: 0px;
     padding: 0px;
     user-select: none;
+    user-zoom: none;
+    -webkit-user-drag: none;
+    -ms-user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
 }
 
 .hide-elem {
@@ -65,6 +70,13 @@ header {
     gap: 15px;
 }
 
+.header-organizer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+}
+
 .headline > img {
     height: 50px;
     transition: all 1200ms;
@@ -110,6 +122,7 @@ header {
     height: 100%;
     width: 100%;
     background-size: contain;
+    background-repeat: no-repeat;
 
     animation-name: wiggle;
     animation-duration: 10s;
